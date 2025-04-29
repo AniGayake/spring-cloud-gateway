@@ -1,0 +1,21 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: fund-transfer
+          uri: lb://fund-transfer
+          predicates:
+            - Path=/funds/**
+        - id: user-registration
+          uri: lb://user-registration
+          predicates:
+            - Path=/customer/**
