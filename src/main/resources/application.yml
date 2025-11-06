@@ -1,8 +1,5 @@
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka
-
+server:
+  port: 8080
 spring:
   cloud:
     gateway:
@@ -11,11 +8,25 @@ spring:
           enabled: true
           lower-case-service-id: true
       routes:
-        - id: fund-transfer
-          uri: lb://fund-transfer
+        - id: customer-registration
+          uri: lb://CUSTOMER-REGISTRATION
           predicates:
-            - Path=/funds/**
-        - id: user-registration
-          uri: lb://user-registration
+            - Path=/api/customer/registration/**
+          filters:
+            - StripPrefix=1
+        - id: customer-details-enquiry
+          uri: lb://CUSTOMER-DETAILS-ENQUIRY
           predicates:
-            - Path=/customer/**
+            - Path=/api/customer/**
+          filters:
+            - StripPrefix=1
+
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
